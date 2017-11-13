@@ -8,3 +8,6 @@
 
 # run daily blocklist update
 0 3 * * * /config/blocklist-update.sh 2>&1
+
+# Run hourly cleanup
+0 1 * * * /config/cleanup.py 2>&1

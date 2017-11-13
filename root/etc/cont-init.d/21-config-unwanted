@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+#remove unwanted folders
+rm -R \
+	/downloads/complete /downloads/incomplete

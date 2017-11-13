@@ -1,28 +1,38 @@
-FROM lsiobase/alpine:3.6
-MAINTAINER sparklyballs
+FROM linuxserver/transmission
+MAINTAINER supmagc
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL build_version="supmagc Transmission version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 
-# install packages
+# install packages
 RUN \
- apk add --no-cache \
-	curl \
-	jq \
-	openssl \
-	p7zip \
-	rsync \
-	tar \
-	transmission-cli \
-	transmission-daemon \
-	unrar \
-	unzip
+ apt-get update && \
+ apt-get install -y \
+    curl \
+    p7zip \
+    python \
+    unrar \
+    wget \
+    git \
+    unzip \
+    tar \
+    ffmpeg && \
+ git clone https://github.com/clinton-hall/nzbToMedia.git /scripts && \
 
-# copy local files
+# cleanup
+ apt-get clean && \
+ rm -rf \
+	/tmp/* \
+	/var/lib/apt/lists/* \
+	/var/tmp/* && \
+
+# pip install
+  pip install transmissionrpc
+
+# add local files
 COPY root/ /
 
 # ports and volumes
-EXPOSE 9091 51413
-VOLUME /config /downloads /watch
+VOLUME /nzbtomedia

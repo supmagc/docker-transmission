@@ -1,19 +1,10 @@
 [linuxserverurl]: https://linuxserver.io
-[forumurl]: https://forum.linuxserver.io
-[ircurl]: https://www.linuxserver.io/irc/
-[podcasturl]: https://www.linuxserver.io/podcast/
 [appurl]: https://www.transmissionbt.com/
-[hub]: https://hub.docker.com/r/linuxserver/transmission/
+[hub]: https://hub.docker.com/r/supmagc/transmission/
 
-[![linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)][linuxserverurl]
+# supmagc/transmission
 
-The [LinuxServer.io][linuxserverurl] team brings you another container release featuring easy user mapping and community support. Find us for support at:
-* [forum.linuxserver.io][forumurl]
-* [IRC][ircurl] on freenode at `#linuxserver.io`
-* [Podcast][podcasturl] covers everything to do with getting the most from your Linux Server plus a focus on all things Docker and containerisation!
-
-# linuxserver/transmission
-[![](https://images.microbadger.com/badges/version/linuxserver/transmission.svg)](https://microbadger.com/images/linuxserver/transmission "Get your own version badge on microbadger.com")[![](https://images.microbadger.com/badges/image/linuxserver/transmission.svg)](https://microbadger.com/images/linuxserver/transmission "Get your own image badge on microbadger.com")[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/transmission.svg)][hub][![Docker Stars](https://img.shields.io/docker/stars/linuxserver/transmission.svg)][hub][![Build Status](https://ci.linuxserver.io/buildStatus/icon?job=Docker-Builders/x86-64/x86-64-transmission)](https://ci.linuxserver.io/job/Docker-Builders/job/x86-64/job/x86-64-transmission/)
+Based on [LinuxServer.io][linuxserverurl], with the addition of nzbToMedia and a cronbased finished downloads cleanup script.
 
 Transmission is designed for easy, powerful use. Transmission has the features you want from a BitTorrent client: encryption, a web interface, peer exchange, magnet links, DHT, µTP, UPnP and NAT-PMP port forwarding, webseed support, watch directories, tracker editing, global and per-torrent speed limits, and more. [Transmission](http://www.transmissionbt.com/about/)
 
@@ -21,16 +12,17 @@ Transmission is designed for easy, powerful use. Transmission has the features y
 
 ## Usage
 
-```
-docker create --name=transmission \
--v <path to data>:/config \
--v <path to downloads>:/downloads \
--v <path to watch folder>:/watch \
--e PGID=<gid> -e PUID=<uid> \
--e TZ=<timezone> \
--p 9091:9091 -p 51413:51413 \
--p 51413:51413/udp \
-linuxserver/transmission
+```sh
+$ docker create --name=transmission \
+  -v <path to data>:/config \
+  -v <path to downloads>:/downloads \
+  -v <path to watch folder>:/watch \
+  -v <path to nzbtomedia config>:/nzbtomedia
+  -e PGID=<gid> -e PUID=<uid> \
+  -e TZ=<timezone> \
+  -p 9091:9091 -p 51413:51413 \
+  -p 51413:51413/udp \
+  supmagc/transmission
 ```
 
 ## Parameters
@@ -40,12 +32,12 @@ For example with a port -p external:internal - what this shows is the port mappi
 So -p 8080:80 would expose port 80 from inside the container to be accessible from the host's IP on port 8080
 http://192.168.x.x:8080 would show you what's running INSIDE the container on port 80.`
 
-
-* `-p 9091` 
+* `-p 9091`
 * `-p 51413` - the port(s)
 * `-v /config` - where transmission should store config files and logs
 * `-v /downloads` - local path for downloads
 * `-v /watch` - watch folder for torrent files
+* `-v /nzbtomedia` - local path for the nzbToMedia config files
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
 * `-e TZ` for timezone information, eg Europe/London
@@ -58,9 +50,9 @@ Sometimes when using data volumes (`-v` flags) permissions issues can arise betw
 
 In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as below:
 
-```
-  $ id <dockeruser>
-    uid=1001(dockeruser) gid=1001(dockergroup) groups=1001(dockergroup)
+```sh
+$ id <dockeruser>
+  uid=1001(dockeruser) gid=1001(dockergroup) groups=1001(dockergroup)
 ```
 
 ## Setting up the application 
@@ -92,29 +84,5 @@ The automatic update will run once a day at 3am local server time.
 ## Info
 
 * To monitor the logs of the container in realtime `docker logs -f transmission`.
-
-* container version number 
-
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' transmission`
-
-* image version number
-
-`docker inspect -f '{{ index .Config.Labels "build_version" }}' linuxserver/transmission`
-
-
-## Versions
-
-+ **25.07.17:** Add rsync package.
-+ **27.05.17:** Rebase to alpine linux 3.6.
-+ **06.02.17:** Rebase to alpine linux 3.5.
-+ **15.01.17:** Add p7zip, tar , unrar and unzip packages.
-+ **16.10.16:** Blocklist autoupdate with optional authentication.
-+ **14.10.16:** Add version layer information.
-+ **23.09.16:** Add information about securing the webui to README..
-+ **21.09.16:** Add curl package.
-+ **09.09.16:** Add layer badges to README.
-+ **28.08.16:** Add badges to README.
-+ **09.08.16:** Rebase to alpine linux.
-+ **06.12.15:** Separate mapping for watch folder.
-+ **16.11.15:** Initial Release. 
-
+* container version number `docker inspect -f '{{ index .Config.Labels "build_version" }}' transmission`
+* image version number `docker inspect -f '{{ index .Config.Labels "build_version" }}' supmagc/transmission`
