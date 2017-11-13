@@ -8,11 +8,11 @@ LABEL build_version="supmagc Transmission version:- ${VERSION} Build-date:- ${BU
 
 # install packages
 RUN \
- apt-get update && \
- apt-get install -y \
+ apk add --no-cache \
     curl \
     p7zip \
     python \
+	py-pip \
     unrar \
     wget \
     git \
@@ -21,15 +21,9 @@ RUN \
     ffmpeg && \
  git clone https://github.com/clinton-hall/nzbToMedia.git /scripts && \
 
-# cleanup
- apt-get clean && \
- rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/* && \
-
 # pip install
-  pip install transmissionrpc
+  pip install transmissionrpc && \
+  apk del py-pip
 
 # add local files
 COPY root/ /
