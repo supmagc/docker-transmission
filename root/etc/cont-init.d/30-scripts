@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+# copy config
+[[ ! -f /config/scripts.cfg ]] && cp \
+    /defaults/scripts.cfg /config/scripts.cfg
+
+chmod 644 /config/scripts.cfg

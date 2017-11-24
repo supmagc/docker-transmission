@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-# copy config
-[[ ! -f /config/cleanup.py ]] && cp \
-    /defaults/cleanup.py /config/cleanup.py
-
-chmod 755 /config/cleanup.py
