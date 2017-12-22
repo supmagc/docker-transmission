@@ -6,7 +6,7 @@
 0       3       *       *       6       run-parts /etc/periodic/weekly
 0       5       1       *       *       run-parts /etc/periodic/monthly
 
-# Run 6 hourly blocklist update
+# Run 3 hourly blocklist update
 0 3 * * * /usr/bin/python /crons/blocklist_update.py 2>&1
 
 # Run hourly cleanup
