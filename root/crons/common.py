@@ -3,12 +3,16 @@ import logging
 import ConfigParser
 import transmissionrpc
 
-def getTransmissionClient(script):
+def getConfigParser():
     cfg = ConfigParser.RawConfigParser()
     if os.path.isfile('/config/scripts.cfg'):
         cfg.read('/config/scripts.cfg')
     elif os.path.isfile('config/scripts.cfg'):
         cfg.read('config/scripts.cfg')
+    return cfg
+
+def getTransmissionClient(script):
+    cfg = getConfigParser()
 
     host = cfg.get('common', 'host')
     port = cfg.getint('common', 'port')
