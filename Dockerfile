@@ -11,7 +11,7 @@ RUN \
  apk add --no-cache \
     curl \
     p7zip \
-    python \
+    python2 \
 	py-pip \
     unrar \
     wget \
@@ -20,10 +20,8 @@ RUN \
     tar \
     ffmpeg && \
  git clone https://github.com/clinton-hall/nzbToMedia.git /scripts && \
-
-# pip install
-  pip install transmissionrpc && \
-  apk del py-pip
+ pip install transmissionrpc && \
+ apk del py-pip
 
 # add local files
 COPY root/ /
