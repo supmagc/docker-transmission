@@ -19,7 +19,6 @@ RUN \
     unzip \
     tar \
     ffmpeg && \
- git clone https://github.com/clinton-hall/nzbToMedia.git /scripts && \
  pip install transmissionrpc && \
  apk del py-pip
 
